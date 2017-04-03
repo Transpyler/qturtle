@@ -36,6 +36,9 @@ test_script:
 after_test:
   - "%PYTHON%\\python.exe setup.py build_exe"
   - "%PYTHON%\\python.exe setup.py bdist_msi"
+  - ps: "mv build/exe* build/qturtle"
+  - "%PYTHON%\\python.exe -m zipfile -c qturtle.zip build/qturtle/"
+  - ps: "mv qturtle.zip dist/"
   #- "%PYTHON%\\python.exe -m nsist installer.cfg"
   #- "%PYTHON%\\python.exe setup.py bdist_wininst"
   #- "%PYTHON%\\python.exe setup.py bdist_wheel"
