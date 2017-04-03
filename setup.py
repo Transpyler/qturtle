@@ -23,7 +23,7 @@ else:
         Executable(
             'src/qturtle_app/__main__.py',
             base=base,
-            targetName='qturtle',
+            targetName='QTurtle.exe' if sys.platform == 'win32' else 'qturtle',
             shortcutName='QTurtle',
             shortcutDir='DesktopFolder',
         )
