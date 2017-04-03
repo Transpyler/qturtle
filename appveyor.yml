@@ -1,6 +1,8 @@
 # We are using Appveyor.io to build our Windows Python packages. Check
 # instructions at https://packaging.python.org/appveyor
 environment:
+  global:
+    TEST_QT: false
   matrix:
     - PYTHON: "C:\\Python34"
       TOXENV: 'py34'

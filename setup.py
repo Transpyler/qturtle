@@ -1,14 +1,34 @@
-# -*- coding: utf-8 -*-
-#
-# This file were created by Python Boilerplate. Use boilerplate to start simple
-# usable and best-practices compliant Python projects.
-#
-# Learn more about it at: http://github.com/fabiommendes/python-boilerplate/
-#
-
-import os
 import codecs
+import os
+import sys
 from setuptools import setup, find_packages
+
+
+# cx_Freeze: dependencies are automatically detected, but it might need
+# fine tuning.
+kwargs = {}
+try:
+    from cx_Freeze import setup, Executable
+except:
+    pass
+else:
+    build_options = {
+        'include_files': [],
+        'packages': ['os'],
+        'excludes': ['tkinter'],
+        'optimize': 1,
+    }
+    base = 'Win32GUI' if sys.platform == 'win32' else None
+
+    kwargs['executables'] = [
+        Executable(
+            'src/qturtle_app/__main__.py',
+            base=base,
+            shortcutName='QTurtle',
+            shortcutDir='DesktopFolder',
+        )
+    ]
+    kwargs['options'] = {'build_exe': build_options}
 
 # Save version and author to __meta__.py
 version = open('VERSION').read().strip()
@@ -50,7 +70,7 @@ setup(
     packages=find_packages('src'),
     install_requires=[
         # 'pyqt5',
-        #'pyqode.python',
+        # 'pyqode.python',
         'transpyler',
     ],
     extras_require={
@@ -71,4 +91,5 @@ setup(
     # Other configurations
     zip_safe=False,
     platforms='any',
+    **kwargs
 )

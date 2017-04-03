@@ -2,6 +2,10 @@ language: python
 cache: pip
 sudo: required
 
+# Environment variables
+env:
+  TEST_QT=false
+
 # Test environments
 matrix:
   include:

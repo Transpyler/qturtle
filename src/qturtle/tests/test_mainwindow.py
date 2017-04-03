@@ -1,7 +1,14 @@
+import os
 import pytest
 from PyQt5 import QtCore
 import mock
 from qturtle.mainwindow import TurtleMainWindow
+
+
+pytestmark = [
+    pytest.mark.skipif(os.environ.get('TEST_QT', 'true') == 'false',
+                       reason='disable QT on CI until we figure out how to do it ;)')
+]
 
 
 @pytest.yield_fixture
