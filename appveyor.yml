@@ -23,7 +23,7 @@ environment:
       TOXENV: 'py36'
 
 install:
-  - "%PYTHON%\\python.exe -m pip install tox wheel cx_Freeze"
+  - "%PYTHON%\\python.exe -m pip install tox wheel cx_Freeze pynsist"
 
 build_script:
   - ECHO "skip build"
@@ -35,8 +35,9 @@ test_script:
 
 after_test:
   - "%PYTHON%\\python.exe setup.py build_exe"
-  - "%PYTHON%\\python.exe setup.py build_msi"
-  #- "%PYTHON%\\python.exe setup.py bdist_msi"
+  - "%PYTHON%\\python.exe setup.py bdist_msi"
+  - "%PYTHON%\\python.exe -m nsist installer.cfg"
+
   #- "%PYTHON%\\python.exe setup.py bdist_wininst"
   #- "%PYTHON%\\python.exe setup.py bdist_wheel"
 
