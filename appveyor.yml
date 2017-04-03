@@ -4,17 +4,17 @@ environment:
   global:
     TEST_QT: false
   matrix:
-    - PYTHON: "C:\\Python34"
-      TOXENV: 'py34'
+    #- PYTHON: "C:\\Python34"
+    #  TOXENV: 'py34'
 
-    - PYTHON: "C:\\Python34-x64"
-      TOXENV: 'py34'
+    #- PYTHON: "C:\\Python34-x64"
+    #  TOXENV: 'py34'
 
-    - PYTHON: "C:\\Python35"
-      TOXENV: 'py35'
+    #- PYTHON: "C:\\Python35"
+    #  TOXENV: 'py35'
 
-    - PYTHON: "C:\\Python35-x64"
-      TOXENV: 'py35'
+    #- PYTHON: "C:\\Python35-x64"
+    #  TOXENV: 'py35'
 
     - PYTHON: "C:\\Python36"
       TOXENV: 'py36'
@@ -25,11 +25,11 @@ environment:
 install:
   - "%PYTHON%\\python.exe -m pip install tox wheel cxfreeze"
 
-build_script:
-  - "%PYTHON%\\python.exe setup.py build"
+#build_script:
+#  - "%PYTHON%\\python.exe setup.py build"
 
-test_script:
-  - "%PYTHON%\\python.exe -m tox"
+#test_script:
+#  - "%PYTHON%\\python.exe -m tox"
 
 after_test:
   - "%PYTHON%\\python.exe setup.py bdist_msi"
