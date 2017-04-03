@@ -23,7 +23,7 @@ environment:
       TOXENV: 'py36'
 
 install:
-  - "%PYTHON%\\python.exe -m pip install tox wheel"
+  - "%PYTHON%\\python.exe -m pip install tox wheel cxfreeze"
 
 build_script:
   - "%PYTHON%\\python.exe setup.py build"
@@ -35,6 +35,7 @@ after_test:
   - "%PYTHON%\\python.exe setup.py bdist_msi"
   - "%PYTHON%\\python.exe setup.py bdist_wininst"
   - "%PYTHON%\\python.exe setup.py bdist_wheel"
+  - "%PYTHON%\\python.exe setup.py bdist_exe"
 
 artifacts:
   - path: dist\*

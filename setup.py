@@ -15,7 +15,7 @@ else:
     build_options = {
         'include_files': [],
         'packages': ['os'],
-        'excludes': ['tkinter'],
+        'excludes': ['tkinter', 'redis', 'lxml'],
         'optimize': 1,
     }
     base = 'Win32GUI' if sys.platform == 'win32' else None
@@ -24,6 +24,7 @@ else:
         Executable(
             'src/qturtle_app/__main__.py',
             base=base,
+            targetName='qturtle',
             shortcutName='QTurtle',
             shortcutDir='DesktopFolder',
         )
