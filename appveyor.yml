@@ -23,7 +23,7 @@ environment:
       TOXENV: 'py36'
 
 install:
-  - "%PYTHON%\\python.exe -m pip install tox wheel cx_Freeze pynsist"
+  - "%PYTHON%\\python.exe -m pip install tox wheel cx_Freeze pynsist PyQt5"
 
 build_script:
   - ECHO "skip build"
@@ -45,7 +45,6 @@ after_test:
 
 artifacts:
   - path: dist\*
-  - path: build\*
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
