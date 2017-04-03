@@ -35,9 +35,8 @@ test_script:
   #- "%PYTHON%\\python.exe -m tox"
 
 after_test:
-  - 'setx CX_FREEZE on'
-  - '%PYTHON%\\python.exe setup.py build_exe'
-  - '%PYTHON%\\python.exe setup.py bdist_msi'
+  - '%PYTHON%\\python.exe setup.py build_exe --cx_freeze'
+  - '%PYTHON%\\python.exe setup.py bdist_msi --cx_freeze'
   - ps: "mv build/exe* build/qturtle"
   - "%PYTHON%\\python.exe -m zipfile -c qturtle.zip build/qturtle/"
   - ps: "mv qturtle.zip dist/"

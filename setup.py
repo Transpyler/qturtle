@@ -6,8 +6,9 @@ from setuptools import setup, find_packages
 # cx_Freeze: dependencies are automatically detected, but it might need
 # fine tuning.
 kwargs = {}
-if 'CX_FREEZE' in os.environ:
+if '--cx-freeze' in sys.argv:
     from cx_Freeze import setup, Executable
+
     build_options = {
         'include_files': [],
         'packages': ['os'],
@@ -26,6 +27,7 @@ if 'CX_FREEZE' in os.environ:
         )
     ]
     kwargs['options'] = {'build_exe': build_options}
+    sys.argv.remove('--cx-freeze')
 
 # Save version and author to __meta__.py
 version = open('VERSION').read().strip()
