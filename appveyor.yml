@@ -26,9 +26,11 @@ install:
   - "%PYTHON%\\python.exe -m pip install tox wheel cx_Freeze"
 
 build_script:
+  - ECHO "skip build"
   #- "%PYTHON%\\python.exe setup.py build"
 
 test_script:
+  - ECHO "skip test"
   #- "%PYTHON%\\python.exe -m tox"
 
 after_test:

@@ -3,7 +3,7 @@ import os
 import sys
 from setuptools import setup, find_packages
 
-
+import nsist
 # cx_Freeze: dependencies are automatically detected, but it might need
 # fine tuning.
 kwargs = {}
