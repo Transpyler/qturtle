@@ -1,0 +1,41 @@
+# We are using Appveyor.io to build our Windows Python packages. Check
+# instructions at https://packaging.python.org/appveyor
+environment:
+  matrix:
+    - PYTHON: "C:\\Python34"
+      TOXENV: 'py34'
+
+    - PYTHON: "C:\\Python34-x64"
+      TOXENV: 'py34'
+
+    - PYTHON: "C:\\Python35"
+      TOXENV: 'py35'
+
+    - PYTHON: "C:\\Python35-x64"
+      TOXENV: 'py35'
+
+    - PYTHON: "C:\\Python36"
+      TOXENV: 'py36'
+
+    - PYTHON: "C:\\Python36-x64"
+      TOXENV: 'py36'
+
+install:
+  - "%PYTHON%\\python.exe -m pip install tox wheel"
+
+build_script:
+  - "%PYTHON%\\python.exe setup.py build"
+
+test_script:
+  - "%PYTHON%\\python.exe -m tox"
+
+after_test:
+  - "%PYTHON%\\python.exe setup.py bdist_msi"
+  - "%PYTHON%\\python.exe setup.py bdist_wininst"
+  - "%PYTHON%\\python.exe setup.py bdist_wheel"
+
+artifacts:
+  - path: dist\*
+
+#on_success:
+#  - TODO: upload the content of dist/*.whl to a public wheelhouse
