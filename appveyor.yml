@@ -34,11 +34,11 @@ test_script:
   #- "%PYTHON%\\python.exe -m tox"
 
 after_test:
-  - "%PYTHON%\\python.exe setup.py bdist_msi"
-  - "%PYTHON%\\python.exe setup.py bdist_wininst"
-  - "%PYTHON%\\python.exe setup.py bdist_wheel"
   - "%PYTHON%\\python.exe setup.py build_exe"
   - "%PYTHON%\\python.exe setup.py build_msi"
+  #- "%PYTHON%\\python.exe setup.py bdist_msi"
+  #- "%PYTHON%\\python.exe setup.py bdist_wininst"
+  #- "%PYTHON%\\python.exe setup.py bdist_wheel"
 
 artifacts:
   - path: dist\*
