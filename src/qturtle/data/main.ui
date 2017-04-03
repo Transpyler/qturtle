@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Tugalinhas</class>
- <widget class="QMainWindow" name="Tugalinhas">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Tugalinhas</string>
+   <string>Pytuga</string>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -254,7 +254,7 @@
   <connection>
    <sender>actionAbrir</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>openFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -270,7 +270,7 @@
   <connection>
    <sender>actionSalvar_Como</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>saveFileAs()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -286,7 +286,7 @@
   <connection>
    <sender>actionSalvar</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>saveFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -302,7 +302,7 @@
   <connection>
    <sender>actionNovo</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -318,7 +318,7 @@
   <connection>
    <sender>actionSair</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -334,7 +334,7 @@
   <connection>
    <sender>actionAmpliar</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>zoomIn()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -350,7 +350,7 @@
   <connection>
    <sender>actionReduzir</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>zoomOut()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -366,7 +366,7 @@
   <connection>
    <sender>actionLimpar_tela</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>clearScene()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -382,7 +382,7 @@
   <connection>
    <sender>actionDocumentation</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>openDocumentation()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -398,7 +398,7 @@
   <connection>
    <sender>actionAbout</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>about()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -414,7 +414,7 @@
   <connection>
    <sender>actionSalvar_imagem</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>saveImageAs()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -430,7 +430,7 @@
   <connection>
    <sender>actionInverter_tema</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>toggleEditorTheme()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -446,7 +446,7 @@
   <connection>
    <sender>actionAumentar_fonte</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>fontZoomIn()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -462,7 +462,7 @@
   <connection>
    <sender>actionReduzir_fonte</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>fontZoomOut()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -478,7 +478,7 @@
   <connection>
    <sender>actionTamanho_padr_o</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>fontZoomReset()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -494,7 +494,7 @@
   <connection>
    <sender>actionAtualizar</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>updateProgram()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -510,7 +510,7 @@
   <connection>
    <sender>actionOcultar_mostar_tuga</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>toggleTurtleVisibility()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -526,7 +526,7 @@
   <connection>
    <sender>actionToggleEditorVisibility</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>toggleEditorVisibility()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -542,7 +542,7 @@
   <connection>
    <sender>actionOcultar_mostrar_tela</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>toggleScenegraphVisibility()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -558,7 +558,7 @@
   <connection>
    <sender>actionFlushExecution</sender>
    <signal>triggered()</signal>
-   <receiver>Tugalinhas</receiver>
+   <receiver>mainWindow</receiver>
    <slot>flushExecution()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -42,7 +42,7 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         uic.loadUi(os.path.join(data_dir, 'main.ui'), self)
         self._turtlewidget = TurtleWidget(
             transpyler=self._transpyler,
-            header_text='Tugalinhas %s\n'
+            header_text='Pytuga %s\n'
                         'Digite `turtlehelp()` para uma lista de comandos'
                         % __version__)
         self._scene = self._turtlewidget.scene()
@@ -342,9 +342,9 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
     #
     def updateTitle(self):
         if self._filename:
-            self.setWindowTitle('Tugalinhas (%s)' % self._filename)
+            self.setWindowTitle('Pytuga (%s)' % self._filename)
         else:
-            self.setWindowTitle('Tugalinhas (not saved)')
+            self.setWindowTitle('Pytuga (not saved)')
 
     def editorText(self):
         """

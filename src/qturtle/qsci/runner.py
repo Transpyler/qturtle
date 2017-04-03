@@ -27,6 +27,8 @@ class TranspylerRunner(QtCore.QObject):
         self._namespace = dict(namespace or {})
         self._update_special_functions()
         self._exec = transpyler.exec
+        self._compile = transpyler.compile
+        self._eval = transpyler.eval
 
     def _update_special_functions(self):
         @functools.wraps(input)
@@ -124,9 +126,6 @@ class TranspylerRunner(QtCore.QObject):
 
         return False
 
-    def transform(self, src):
-        return src
-
     def updateNamespace(self, D):
         self._namespace.update(D)
 
@@ -141,7 +140,7 @@ class TranspylerRunner(QtCore.QObject):
         out = sys.stdout = io.StringIO()
         err = sys.sterr = io.StringIO()
         try:
-            code = compile(self.transform(cmd), '<input>', mode)
+            code = self._compile(cmd, '<input>', mode)
             self._exec(code, ns)
         except:
             traceback.print_exc(file=out)

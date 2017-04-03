@@ -6,11 +6,8 @@ from setuptools import setup, find_packages
 # cx_Freeze: dependencies are automatically detected, but it might need
 # fine tuning.
 kwargs = {}
-try:
+if 'CX_FREEZE' in os.environ:
     from cx_Freeze import setup, Executable
-except:
-    pass
-else:
     build_options = {
         'include_files': [],
         'packages': ['os'],
@@ -53,7 +50,7 @@ setup(
 
     # Classifiers (see https://pypi.python.org/pypi?%3Aaction=list_classifiers)
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
