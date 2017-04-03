@@ -1,6 +1,6 @@
 language: python
 cache: pip
-sudo: false
+sudo: true
 
 # Test environments
 matrix:
@@ -14,7 +14,8 @@ matrix:
 
 # Package installation
 install:
-  - pip install tox codecov pyqt5
+  - apt-get install python3-pyqt5
+  - pip install tox codecov
 
 # Run tests
 script:
