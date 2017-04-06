@@ -5,6 +5,7 @@ The main editor with python syntax highlighting
 import builtins
 import keyword
 
+import sys
 from PyQt5 import Qsci, QtGui, QtCore
 from PyQt5.QtGui import QColor, QFont
 
@@ -39,6 +40,7 @@ class TranspylerEditor(Qsci.QsciScintilla):
     A Scintilla based text editor with Python syntax highlight.
     """
 
+    MONOSPACE_FONT = 'Courier New' if sys.platform == 'win32' else 'monospace'
     NAMED_COLORS_INV = dict(
         lexer_default='default',
         lexer_comment='comment',
@@ -133,7 +135,7 @@ class TranspylerEditor(Qsci.QsciScintilla):
     def __init__(self,
                  transpyler,
                  parent=None, *,
-                 fontsize=11, fontfamily='monospace',
+                 fontsize=11, fontfamily=MONOSPACE_FONT,
                  autocompletion_words=(), autocomplete_python=True,
                  theme='dark',
                  **kwds
