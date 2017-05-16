@@ -4,4 +4,3 @@ from .turtlenamespace import TurtleNamespace
 from .turtleobject import Turtle
 from .turtlescene import TurtleScene, TurtleView
 from .turtlewidget import TurtleWidget
-from .mainwindow import TurtleMainWindow, start_application

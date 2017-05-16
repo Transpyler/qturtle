@@ -1,11 +1,17 @@
 from PyQt5 import QtWidgets
 from lazyutils import delegate_to
 
-from . import TurtleScene, TurtleView
+from .turtlescene import TurtleScene, TurtleView
 from .qsci.qscirepleditor import QsciReplEditor
 
 
 class TurtleWidget(QtWidgets.QWidget):
+    """
+    Main widget of application: it has a GraphicsScene and a ReplEditor
+    components. The full application simply wraps this widget inside a window
+    with some menus.
+    """
+
     text = delegate_to('_editor')
     setText = delegate_to('_editor')
     zoomIn = delegate_to('_view')
@@ -26,25 +32,27 @@ class TurtleWidget(QtWidgets.QWidget):
         # Configure scene
         self._scene = TurtleScene()
         self._view = TurtleView(self._scene)
-        self._namespace = dict(self._scene.getNamespace())
 
         # Configure editor
         self._transpyler = transpyler
-        self._editor = QsciReplEditor(namespace=self._namespace,
-                                      header_text=header_text,
-                                      transpyler=transpyler)
-        self._editor.setText(text)
-        self._editor.setNamespace(self._namespace)
-        self._editor.sizePolicy().setHorizontalPolicy(7)
+        self._repl_editor = QsciReplEditor(header_text=header_text,
+                                           transpyler=transpyler)
+        self._repl_editor.setText(text)
+        self._repl_editor.initNamespace()
+        self._repl_editor.sizePolicy().setHorizontalPolicy(7)
 
         # Configure layout
         self._splitter = QtWidgets.QSplitter()
         self._splitter.addWidget(self._view)
-        self._splitter.addWidget(self._editor)
+        self._splitter.addWidget(self._repl_editor)
         self._layout = QtWidgets.QHBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.addWidget(self._splitter)
         self._splitter.setSizes([200, 120])
+
+        # Connect signals
+        self._repl_editor.turtleMessageSignal.connect(self._scene.handleMessage)
+        self._scene.messageReplySignal.connect(self._repl_editor.handleMessageReply)
 
     def scene(self):
         return self._scene
@@ -55,14 +63,23 @@ class TurtleWidget(QtWidgets.QWidget):
     def namespace(self):
         return self._namespace
 
-    def editor(self):
-        return self._editor
+    def replEditor(self):
+        return self._repl_editor
 
     def fontZoomIn(self):
-        self._editor.zoomIn()
+        self._repl_editor.zoomIn()
 
     def fontZoomOut(self):
-        self._editor.zoomOut()
+        self._repl_editor.zoomOut()
 
     def fontZoomTo(self, factor):
-        self._editor.zoomTo(factor)
+        self._repl_editor.zoomTo(factor)
+
+    def toggleTheme(self):
+        self._repl_editor.toggleTheme()
+
+    def text(self):
+        return self._repl_editor.text()
+
+    def setText(self, text):
+        self._repl_editor.setText(text)

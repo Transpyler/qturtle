@@ -1,23 +1,29 @@
 from PyQt5 import QtWidgets, QtCore
 
+from .mixins import ToggleThemeMixin
 
-class ReplEditor(QtWidgets.QWidget):
+
+class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
+    @property
+    def turtleMessageSignal(self):
+        return self._console.turtleMessageSignal
+
     def __init__(self,
                  transpyler,
                  parent=None, *,
+                 theme='dark',
                  header_text=None,
-                 hide_console_margins=False,
-                 namespace=None):
-        super().__init__(parent)
+                 hide_console_margins=False):
         assert transpyler
+        super().__init__(parent=parent, theme=theme)
         self._transpyler = transpyler
         self._header_text = header_text
         self._hide_console_margins = hide_console_margins
-        self._namespace = {} if namespace is None else namespace
-        self._console = self._createConsoleWidget()
-        self._editor = self._createEditorWidget()
+        self._console = self._createConsoleApp()
+        self._editor = self._createEditorApp()
+        self._editor.setConsole(self._console)
 
-        # Create buttons and connect buttons
+        # Create buttons
         run_button = QtWidgets.QPushButton('Run')
         hideup_button = QtWidgets.QPushButton('\u25b2')
         hidedown_button = QtWidgets.QPushButton('\u25bc')
@@ -32,6 +38,8 @@ class ReplEditor(QtWidgets.QWidget):
         button_area.addWidget(run_button, 200)
         button_area.setContentsMargins(0, 0, 0, 0)
         buttons.setFixedHeight(25)
+
+        # Connect signals
         run_button.clicked.connect(self.runCode)
         hideup_button.clicked.connect(self.hideUp)
         hidedown_button.clicked.connect(self.hideDown)
@@ -40,7 +48,7 @@ class ReplEditor(QtWidgets.QWidget):
         top_widget = QtWidgets.QWidget()
         top_layout = QtWidgets.QVBoxLayout(top_widget)
         top_layout.setContentsMargins(0, 0, 0, 0)
-        top_layout.addWidget(self._editor)
+        top_layout.addWidget(self._editor.widget())
         top_layout.addWidget(buttons)
         self._top_widget = top_widget
 
@@ -49,7 +57,7 @@ class ReplEditor(QtWidgets.QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         splitter = QtWidgets.QSplitter(QtCore.Qt.Orientation(0))
         splitter.addWidget(top_widget)
-        splitter.addWidget(self._console)
+        splitter.addWidget(self._console.widget())
         splitter.setSizes([200, 120])
         splitter.setChildrenCollapsible(False)
         layout.addWidget(splitter)
@@ -58,6 +66,12 @@ class ReplEditor(QtWidgets.QWidget):
 
         # Size hints
         self.setMinimumSize(QtCore.QSize(100, 200))
+
+        # Set theme
+        self.setTheme(self.theme())
+
+    def handleMessageReply(self, msg):
+        self._console.handleMessageReply(msg)
 
     def transpyler(self):
         return self._transpyler
@@ -74,10 +88,13 @@ class ReplEditor(QtWidgets.QWidget):
     def setNamespace(self, ns):
         self._console.setNamespace(ns)
 
+    def initNamespace(self):
+        self._console.initNamespace()
+
     def runCode(self):
-        text = self._editor.text()
+        text = self._editor.fullText()
         if text:
-            result = self._console.executeCommand(text)
+            result = self._console.runCode(text)
             if result and self._console.isHidden():
                 self.toggleConsoleVisibility()
 
@@ -117,9 +134,9 @@ class ReplEditor(QtWidgets.QWidget):
     def text(self):
         return self._editor.text()
 
-    def toggleTheme(self):
-        self._console.toggleTheme()
-        self._editor.toggleTheme()
+    def setTheme(self, theme):
+        self._console.setTheme(theme)
+        self._editor.setTheme(theme)
 
     def zoomIn(self):
         self._console.zoomIn()
@@ -133,24 +150,8 @@ class ReplEditor(QtWidgets.QWidget):
         self._console.zoomTo(factor)
         self._editor.zoomTo(factor)
 
-    def _createConsoleWidget(self):
+    def _createConsoleApp(self):
         raise NotImplementedError('must be implemented in a subclass')
 
-    def _createEditorWidget(self):
+    def _createEditorApp(self):
         raise NotImplementedError('must be implemented in a subclass')
-
-    def __getattr__(self, attr):
-        # FIXME: this is ugly. We should choose methods explicitly
-        if 'Console' in attr:
-            head, _, tail = attr.partition('Console')
-            return getattr(self._console, head + tail)
-        else:
-            try:
-                return getattr(self._editor, attr)
-            except AttributeError:
-                try:
-                    return getattr(self._console, attr)
-                except AttributeError:
-                    tname = type(self).__name__
-                    msg = '%s object has no attribute %s' % (tname, attr)
-                    raise AttributeError(msg)

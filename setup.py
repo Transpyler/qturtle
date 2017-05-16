@@ -13,7 +13,7 @@ if '--cx-freeze' in sys.argv:
 
     build_options = {
         'include_files': [],
-        'packages': ['os', 'pytuga', 'pygments', 'PyQt5', 'PyQt5.Qsci'],
+        'packages': ['os', 'pygments', 'PyQt5', 'PyQt5.Qsci'],
         'excludes': [
             'tkinter', 'redis', 'lxml',
             'qturtle.qsci.widgets',
@@ -115,7 +115,7 @@ setup(
     # Entry points
     entry_points={
         'console_scripts': [
-            'qturtle = qturtle_app.__main__:start_application',
+            'qturtle = qturtle.__main__:start_application',
         ]
     },
 

@@ -4,10 +4,19 @@ The main editor with python syntax highlighting
 
 import builtins
 import keyword
-
 import sys
+
 from PyQt5 import Qsci, QtGui, QtCore
 from PyQt5.QtGui import QColor, QFont
+
+from qturtle.colors import COLOR_SALMON, COLOR_GRAY3, COLOR_ORANGE, \
+    COLOR_YELLOW, COLOR_RED, COLOR_BLUE_SKY, COLOR_SALMON_DARK, COLOR_GRAY7, \
+    COLOR_GRAY10, COLOR_GRAY5, COLOR_GRAY8, COLOR_LEAD_DARK, \
+    COLOR_LEAD, COLOR_BLUE_AQUA, COLOR_GREEN, COLOR_BLUE_SEA, COLOR_PINK, \
+    COLOR_BLUE, COLOR_MAGENTA, COLOR_RED_DARK, COLOR_AQUA, \
+    COLOR_PURPLE, COLOR_GRAY9, COLOR_GRAY4, COLOR_GRAY6
+from .. import mixins
+from ..colors import COLOR_BLACK, COLOR_GRAY1, COLOR_GRAY2, COLOR_WHITE
 
 Return = QtCore.Qt.Key_Return
 Enter = QtCore.Qt.Key_Enter
@@ -35,7 +44,7 @@ PYTHON_WORDS = tuple(
 # Thanks to Eli Bendersky:
 # http://eli.thegreenplace.net/2011/04/01/sample-using-qscintilla-with-pyqt
 #
-class TranspylerEditor(Qsci.QsciScintilla):
+class TranspylerEditor(mixins.TranspylerEditorMixin, Qsci.QsciScintilla):
     """
     A Scintilla based text editor with Python syntax highlight.
     """
@@ -65,54 +74,54 @@ class TranspylerEditor(Qsci.QsciScintilla):
         NAMED_COLORS['lexer_' + v].append(c)
 
     DARK_COLORS = dict(
-        margins_background='#000000',
-        margins_foreground='#555753',
-        caret_line_background='#555753',
-        background='#2e3436',
+        margins_background=COLOR_BLACK,
+        margins_foreground=COLOR_GRAY2,
+        caret_line_background=COLOR_GRAY2,
+        background=COLOR_GRAY1,
 
         # Lexer colors
-        lexer_default='#d3c7cf',
-        lexer_comment='#888a85',
-        lexer_number='#ff6c10',
-        lexer_string='#edd400',
-        lexer_keyword='#ffffff',
-        lexer_definition='#729fcf',
-        lexer_decorator='#ad7fa8',
-        lexer_badstring='#ff0000',
+        lexer_default=COLOR_SALMON,
+        lexer_comment=COLOR_GRAY3,
+        lexer_number=COLOR_ORANGE,
+        lexer_string=COLOR_YELLOW,
+        lexer_keyword=COLOR_WHITE,
+        lexer_definition=COLOR_BLUE_SKY,
+        lexer_decorator=COLOR_SALMON_DARK,
+        lexer_badstring=COLOR_RED,
     )
 
     WHITE_COLORS = dict(
-        margins_background='#f6f6f6',
-        margins_foreground='#8d9091',
-        caret_line_background='#eeeeec',
-        background='#ffffff',
+        margins_background=COLOR_GRAY9,
+        margins_foreground=COLOR_GRAY4,
+        caret_line_background=COLOR_GRAY6,
+        background=COLOR_WHITE,
 
         # Lexer colors
-        lexer_default='#000000',
-        lexer_comment='#0000ff',
-        lexer_number='#ff00ff',
-        lexer_string='#ff00ff',
-        lexer_keyword='#a52a2a',
-        lexer_definition='#008a8c',
-        lexer_decorator='#a02ff0',
-        lexer_badstring='#ff0000',
+        lexer_default=COLOR_BLACK,
+        lexer_comment=COLOR_BLUE,
+        lexer_number=COLOR_MAGENTA,
+        lexer_string=COLOR_MAGENTA,
+        lexer_keyword=COLOR_RED_DARK,
+        lexer_definition=COLOR_AQUA,
+        lexer_decorator=COLOR_PURPLE,
+        lexer_badstring=COLOR_RED,
     )
 
     LIGHT_COLORS = dict(
-        margins_background='#f0f0f0',
-        margins_foreground='#a2a3a3',
-        caret_line_background='#f1f1ef',
-        background='#f6f7f8',
+        margins_background=COLOR_GRAY7,
+        margins_foreground=COLOR_GRAY5,
+        caret_line_background=COLOR_GRAY8,
+        background=COLOR_GRAY10,
 
         # Lexer colors
-        lexer_default='#4d4e53',
-        lexer_comment='#708090',
-        lexer_number='#0077aa',
-        lexer_string='#0077aa',
-        lexer_keyword='#669900',
-        lexer_definition='#4186a8',
-        lexer_decorator='#dd4a68',
-        lexer_badstring='#ff0000',
+        lexer_default=COLOR_LEAD_DARK,
+        lexer_comment=COLOR_LEAD,
+        lexer_number=COLOR_BLUE_AQUA,
+        lexer_string=COLOR_BLUE_AQUA,
+        lexer_keyword=COLOR_GREEN,
+        lexer_definition=COLOR_BLUE_SEA,
+        lexer_decorator=COLOR_PINK,
+        lexer_badstring=COLOR_RED,
     )
 
     DEFAULT_COLORS = DARK_COLORS
@@ -133,16 +142,17 @@ class TranspylerEditor(Qsci.QsciScintilla):
         HighlightedIdentifier=14, Decorator=15)
 
     def __init__(self,
-                 transpyler,
+                 transpyler=None,
                  parent=None, *,
                  fontsize=11, fontfamily=MONOSPACE_FONT,
                  autocompletion_words=(), autocomplete_python=True,
                  theme='dark',
-                 **kwds
+                 **kwargs
                  ):
-        assert transpyler
-        self._transpyler = transpyler
-        super().__init__(parent)
+        if transpyler:
+            self._transpyler = transpyler
+        super().__init__(parent=parent, theme=theme)
+        assert self._transpyler, 'transpyler must be defined!'
 
         # Fonts
         self.setAllFonts(fontfamily, fontsize)
@@ -161,6 +171,7 @@ class TranspylerEditor(Qsci.QsciScintilla):
                 api.add(word)
             api.prepare()
         self.setLexer(lexer)
+        assert self.lexer() == lexer
 
         # Set font for lexer again?
         bfamily = bytes(fontfamily, encoding='utf8')
@@ -180,17 +191,9 @@ class TranspylerEditor(Qsci.QsciScintilla):
         self.setAutoCompletionThreshold(2)
         self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAPIs)
 
-        # Set colors
-        self._theme = theme
-        color_kwds = {k: v for (k, v) in kwds.items() if k.endswith('_color')}
-        self.setTheme(theme, **color_kwds)
-
         # Check for any rogue parameter
-        if kwds:
-            raise TypeError('invalid parameter: %r' % kwds.popitem()[0])
-
-    def transpyler(self):
-        return self._transpyler
+        if kwargs:
+            raise TypeError('invalid parameter: %r' % kwargs.popitem()[0])
 
     def sizeHint(self):
         return QtCore.QSize(100, 200)
@@ -284,10 +287,6 @@ class TranspylerEditor(Qsci.QsciScintilla):
             style_idx = self.LEXER_STYLES[style]
             lexer.setColor(color, style_idx)
 
-    def runCode(self):
-        """Runs the source code in the editor when user press Control + Return
-        """
-
     def keyPressEvent(self, ev):
         key = ev.key()
         modifiers = ev.modifiers()
@@ -318,18 +317,10 @@ class TranspylerEditor(Qsci.QsciScintilla):
         else:
             super().keyPressEvent(ev)
 
-    def toggleTheme(self):
-        if self._theme == 'dark':
-            self.setTheme('light')
-        else:
-            self.setTheme('dark')
-
-    def theme(self):
-        return self._theme
-
-    def setTheme(self, theme, **kwds):
-        colors = dict(self.THEMES[theme])
-        for k, v in kwds.items():
-            colors[k[:-6]] = v
-        self.setColors(**colors)
+    def setTheme(self, theme):
         self._theme = theme
+        colors = dict(self.THEMES[theme])
+        self.setColors(**colors)
+
+    def fullText(self):
+        return self.text()

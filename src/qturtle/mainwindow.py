@@ -47,7 +47,9 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
                         % __version__)
         self._scene = self._turtlewidget.scene()
         self._view = self._turtlewidget.view()
-        self._editor = self._turtlewidget.editor()
+        self._repl_editor = self._turtlewidget.replEditor()
+        self._editor = self._repl_editor.editor()
+        self._console = self._repl_editor.console()
         self._layout = QtWidgets.QVBoxLayout(self.centralwidget)
         self._layout.addWidget(self._turtlewidget)
         self._layout.setContentsMargins(2, 0, 2, 2)
@@ -67,8 +69,9 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         return self._transpyler
 
     def _defaultTranspyler(self):
-        from transpyler.transpyler import transpyler
-        return transpyler
+        from transpyler import simple_transpyler
+
+        return simple_transpyler
 
     #
     # Callbacks for *file* operations
@@ -146,7 +149,7 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         self._turtlewidget.fontZoomTo(1)
 
     def clearScene(self):
-        self._scene.clear()
+        self._scene.clearTurtles()
 
     def toggleTurtleVisibility(self):
         if self._scene.isTurtleVisible():
@@ -154,13 +157,13 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         else:
             self._scene.showTurtle()
 
-    def toggleScenegraphVisibility(self):
-        if self._view.isVisible():
-            self._view.hide()
-            if self._editor.isHidden():
-                self._editor.show()
-        else:
+    def toggleSceneLayout(self):
+        if self._view.isHidden():
             self._view.show()
+        elif self._repl_editor.isVisible():
+            self._repl_editor.hide()
+        else:
+            self._repl_editor.show()
 
     def flushExecution(self):
         self._turtlewidget.flushExecution()
@@ -177,13 +180,25 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
     def toggleEditorTheme(self):
         self._turtlewidget.toggleTheme()
 
-    def toggleEditorVisibility(self):
-        if self._editor.isVisible():
-            self._editor.hide()
-            if self._view.isHidden():
-                self._view.show()
-        else:
+    def toggleEditorLayout(self):
+        if self._repl_editor.isHidden():
+            self._repl_editor.show()
+        elif self._editor.isHidden():
             self._editor.show()
+        elif self._console.isVisible():
+            self._repl_editor.hideDown()
+        elif self._view.isVisible():
+            self._view.hide()
+
+    def toggleConsoleLayout(self):
+        if self._repl_editor.isHidden():
+            self._repl_editor.show()
+        elif self._console.isHidden():
+            self._console.show()
+        elif self._editor.isVisible():
+            self._repl_editor.hideUp()
+        elif self._view.isVisible():
+            self._view.hide()
 
     #
     # Examples menu
@@ -202,7 +217,7 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         def callback():
             with open(file) as F:
                 data = F.read()
-            self._editor.editor().setText(data)
+            self._repl_editor.editor().setText(data)
 
         return callback
 
@@ -362,7 +377,6 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
     # Private methods
     #
     def _window_icon(self):
-        dirpath = os.path.dirname(__file__)
         icon_path = os.path.join(self._data_dir, 'icon.svg')
         return QtGui.QIcon(icon_path)
 
@@ -381,7 +395,7 @@ def start_application(transpyler=None, **kwargs):
     """
 
     if transpyler is None:
-        from transpyler.transpyler import transpyler
+        from transpyler import simple_transpyler as transpyler
     TurtleMainWindow.launchInstance(transpyler, **kwargs)
 
 

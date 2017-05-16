@@ -57,10 +57,8 @@
     <addaction name="actionReduzir"/>
     <addaction name="separator"/>
     <addaction name="actionLimpar_tela"/>
-    <addaction name="actionOcultar_mostrar_tela"/>
-    <addaction name="actionOcultar_mostar_tuga"/>
+    <addaction name="actionSceneLayout"/>
     <addaction name="separator"/>
-    <addaction name="actionFlushExecution"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -80,7 +78,8 @@
     <addaction name="actionTamanho_padr_o"/>
     <addaction name="separator"/>
     <addaction name="actionInverter_tema"/>
-    <addaction name="actionToggleEditorVisibility"/>
+    <addaction name="actionEditorLayout"/>
+    <addaction name="actionConsoleLayout"/>
    </widget>
    <widget class="QMenu" name="menuExamples">
     <property name="title">
@@ -211,28 +210,20 @@
     <string>Atualizar</string>
    </property>
   </action>
-  <action name="actionOcultar_mostrar_tela">
+  <action name="actionSceneLayout">
    <property name="text">
     <string>Ocultar/mostrar tela</string>
-   </property>
-   <property name="shortcut">
-    <string>F10</string>
-   </property>
-  </action>
-  <action name="actionToggleEditorVisibility">
-   <property name="text">
-    <string>Ocultar/mostrar</string>
    </property>
    <property name="shortcut">
     <string>F9</string>
    </property>
   </action>
-  <action name="actionOcultar_mostar_tuga">
+  <action name="actionEditorLayout">
    <property name="text">
-    <string>Ocultar/mostar Tuga</string>
+    <string>Editor layout</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F10</string>
+    <string>F10</string>
    </property>
   </action>
   <action name="actionMais_exemplos">
@@ -240,12 +231,12 @@
     <string>Mais exemplos...</string>
    </property>
   </action>
-  <action name="actionFlushExecution">
+  <action name="actionConsoleLayout">
    <property name="text">
-    <string>Adiantar execução</string>
+    <string>Console layout</string>
    </property>
    <property name="shortcut">
-    <string>F4</string>
+    <string>F11</string>
    </property>
   </action>
  </widget>
@@ -508,10 +499,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionOcultar_mostar_tuga</sender>
+   <sender>actionEditorLayout</sender>
    <signal>triggered()</signal>
    <receiver>mainWindow</receiver>
-   <slot>toggleTurtleVisibility()</slot>
+   <slot>toggleEditorLayout()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -524,10 +515,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionToggleEditorVisibility</sender>
+   <sender>actionSceneLayout</sender>
    <signal>triggered()</signal>
    <receiver>mainWindow</receiver>
-   <slot>toggleEditorVisibility()</slot>
+   <slot>toggleSceneLayout()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -540,26 +531,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionOcultar_mostrar_tela</sender>
+   <sender>actionConsoleLayout</sender>
    <signal>triggered()</signal>
    <receiver>mainWindow</receiver>
-   <slot>toggleScenegraphVisibility()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>174</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionFlushExecution</sender>
-   <signal>triggered()</signal>
-   <receiver>mainWindow</receiver>
-   <slot>flushExecution()</slot>
+   <slot>toggleConsoleLayout()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -588,11 +563,11 @@
   <slot>fontZoomOut()</slot>
   <slot>fontZoomReset()</slot>
   <slot>updateProgram()</slot>
-  <slot>toggleEditorVisibility()</slot>
-  <slot>toggleScenegraphVisibility()</slot>
-  <slot>toggleTurtleVisibility()</slot>
   <slot>moreExamples()</slot>
   <slot>openExample(str)</slot>
   <slot>flushExecution()</slot>
+  <slot>toggleEditorLayout()</slot>
+  <slot>toggleConsoleLayout()</slot>
+  <slot>toggleSceneLayout()</slot>
  </slots>
 </ui>

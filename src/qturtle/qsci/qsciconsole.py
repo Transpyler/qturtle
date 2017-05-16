@@ -12,6 +12,7 @@ from qturtle.qsci.consolehistory import History
 from qturtle.qsci.utils import splitindent
 from .qscieditor import TranspylerEditor
 from .runner import TranspylerRunner
+from ..mixins import TranspylerConsoleMixin
 
 _stdout = sys.stdout
 Tab = QtCore.Qt.Key_Tab
@@ -48,20 +49,17 @@ UnlockedNavKeys = {Up, Down, Right, Left, PageUp, PageDown, Home}
 UnlockedShiftKeys = set()
 
 
-class TranspylerConsole(TranspylerEditor):
+class TranspylerConsole(TranspylerConsoleMixin, TranspylerEditor):
     """
     A Scintilla based console.
     """
 
     printToConsoleSignal = QtCore.pyqtSignal(str, bool)
 
-    def __init__(self,
-                 transpyler,
-                 parent=None, *,
-                 header_text=None,
-                 hide_margins=True, **kwds):
-        super().__init__(transpyler, parent, **kwds)
-        if hide_margins:
+    def __init__(self, transpyler, parent=None, **kwargs):
+        super().__init__(transpyler, parent=parent, **kwargs)
+
+        if self._hide_margins:
             self.setMarginWidth(0, 0)
             self.setMarginWidth(1, 0)
         self._current_command = []
@@ -75,10 +73,10 @@ class TranspylerConsole(TranspylerEditor):
         self.printToConsoleSignal.connect(self.printToConsole)
 
         # Set header text
-        if header_text is None:
+        if self._header_text is None:
             header_text = '>>> '
         else:
-            header_text = '%s\n>>> ' % header_text
+            header_text = '%s\n>>> ' % self._header_text
         self.setText(header_text)
         lineno = header_text.count('\n')
         self._locked_position = (lineno, 3)
