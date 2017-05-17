@@ -2,6 +2,7 @@ import os
 import sys
 
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
+from PyQt5.QtCore import QTranslator, QLocale
 
 from . import __version__
 from .turtlewidget import TurtleWidget
@@ -23,6 +24,11 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         """
 
         app = QtWidgets.QApplication(sys.argv)
+        path = os.path.join(os.path.dirname(__file__), 'data')
+        locale = QLocale()
+        translator = QTranslator()
+        translator.load(locale, 'qturtle', '_', path, '.qm')
+        app.installTranslator(translator)
         window = cls(transpyler, **kwargs)
         if show:
             window.show()
