@@ -6,8 +6,8 @@ server and the Jupyter kernel is the client. The forward(), left(),
 etc functions on the client just send requests for the Qt application asking
 for updates or information.
 """
-from transpyler.turtle.qt.turtle import Turtle, global_namespace
-from transpyler.turtle import globalfunctions, state
+from transpyler.turtle import state
+from transpyler.turtle.qt.turtle import Turtle
 
 TURTLES_COMM = None
 MESSAGE_HANDLERS = []
@@ -35,17 +35,6 @@ class TurtleState(state.MirrorState):
 
 
 Turtle._state_factory = TurtleState
-
-
-class GlobalFunctions(globalfunctions.GlobalFunctions):
-    """
-    Remote global functions whose send method uses the jupyter comm.
-    """
-
-    def send(self, msg):
-        # We do not get a reply because comm.on_msg seems to run on the main
-        # thread and is locked before we leave the .send(msg) method.
-        TURTLES_COMM.send(msg)
 
 
 def handle_qturtle_comm(comm, msg):
@@ -77,10 +66,9 @@ def comm(ipython):
                                                 handle_qturtle_comm)
 
 
-def namespace(transpyler):
+def init_namespace(transpyler, ns):
     """
     Return the default namespace.
     """
 
-    ns = global_namespace(Turtle, GlobalFunctions)
-    return ns
+    transpyler.qturtle = True

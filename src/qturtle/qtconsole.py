@@ -10,7 +10,6 @@ import sys
 import uuid
 from collections import deque
 from logging import getLogger
-from pprint import pprint
 
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -18,7 +17,7 @@ from jupyter_client.localinterfaces import is_local_ip
 from lazyutils import lazy
 from qtconsole.qtconsoleapp import JupyterQtConsoleApp
 
-from transpyler import get_transpyler_from_name
+from transpyler import Transpyler
 from transpyler.jupyter.app import TranspylerKernelManager
 from transpyler.jupyter.setup import setup_assets
 from . import colors
@@ -187,10 +186,10 @@ class TranspylerConsole(TranspylerConsoleMixin, QtWidgets.QWidget):
             self.initTurtleComm()
 
         self.runCodeSilent(
-            'from qturtle.kernel import namespace as _namespace\n'
-            '_ns = _namespace(get_ipython().kernel.transpyler)\n'
-            'globals().update(_ns)\n'
-            'fd(0)  # create default turtle\n'
+            'from qturtle.kernel import init_namespace\n'
+            'init_namespace(get_ipython().kernel.transpyler, globals())\n'
+            'del init_namespace\n'
+            'forward(0)  # create default turtle\n'
         )
 
     def initTurtleComm(self):
@@ -311,11 +310,7 @@ def start_qtconsole(transpyler=None, **kwargs):
     Starts a transpyler-based qtconsole application.
     """
 
-    if transpyler is None:
-        name = sys.argv[-1]
-        if not '/' in name:
-            transpyler = get_transpyler_from_name(name)
-
+    transpyler = transpyler or Transpyler()
     kwargs['transpyler'] = transpyler
     ITranspylerQtConsoleApp.launch_instance(**kwargs)
 

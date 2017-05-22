@@ -14,7 +14,7 @@ PYTUGA_DOCUMENTATION_PAGE = 'http://pytuga.readthedocs.org/pt/latest/'
 
 class TurtleMainWindow(QtWidgets.QMainWindow):
     """
-    Main window for Pytuga GUI.
+    Main window for QTurtle GUI.
     """
 
     @classmethod

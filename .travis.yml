@@ -3,10 +3,6 @@ cache: pip
 sudo: required
 os: trusty
 
-# Environment variables
-env:
-  TEST_QT=false
-
 # Test environments
 matrix:
   include:
@@ -17,11 +13,16 @@ matrix:
    #- env: TOXENV=py36
    #  python: 3.6
 
+
+# Make Qt available in virtualenv
+virtualenv:
+  system_site_packages: true
+
 # Package installation
 install:
   - sudo apt-get update
   - sudo apt-get -qq install python3-pyqt5 python3-pyqt5.qsci
-  - apt-get install python3-pyqt5
+  - sudo apt-get install -y python3-pyqt5
   - pip install tox codecov
 
 # Run tests
