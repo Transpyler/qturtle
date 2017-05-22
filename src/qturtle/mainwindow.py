@@ -4,6 +4,7 @@ import sys
 from PyQt5 import QtWidgets, QtGui, QtCore, uic
 from PyQt5.QtCore import QTranslator, QLocale
 
+from transpyler import Transpyler
 from . import __version__
 from .turtlewidget import TurtleWidget
 
@@ -75,9 +76,7 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
         return self._transpyler
 
     def _defaultTranspyler(self):
-        from transpyler import simple_transpyler
-
-        return simple_transpyler
+        return Transpyler()
 
     #
     # Callbacks for *file* operations

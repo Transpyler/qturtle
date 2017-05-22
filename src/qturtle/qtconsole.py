@@ -40,10 +40,7 @@ class ITranspylerQtConsoleApp(JupyterQtConsoleApp):
 
     @lazy
     def use_kernel(self):
-        try:
-            return self.transpyler.name
-        except AttributeError:
-            return 'python'
+        return self.transpyler.name or 'python'
 
     def __init__(self, *args, transpyler=None, **kwargs):
         super().__init__(*args, **kwargs)
