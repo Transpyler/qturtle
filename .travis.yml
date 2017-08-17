@@ -14,10 +14,6 @@ matrix:
    #  python: 3.6
 
 
-# Make Qt available in virtualenv
-virtualenv:
-  system_site_packages: true
-
 # Package installation
 install:
   - sudo apt-get update
