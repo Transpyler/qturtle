@@ -82,14 +82,3 @@ def test_helpstr():
     stdout, sys.stdout = sys.stdout, io.StringIO()
     help('def')
     assert turtle_namespace.helpstr('def') == sys.stdout.getvalue()
-
-def test_function_description():
-    import qturtle.turtlenamespace as turtle_namespace
-    
-    assert(turtle_namespace.function_description('def') == \
-           'A function definition defines a user-defined function object (see -- section The standard type hierarchy):')
-    assert(turtle_namespace.function_description('for') == \
-       "The \"for\" statement is used to iterate over the elements of a sequence -- (such as a string, tuple or list) or other iterable object:")
-    assert(turtle_namespace.function_description('help') == \
-       "help = class _Helper(builtins.object) -- |  Define the builtin \'help\'.")
-
