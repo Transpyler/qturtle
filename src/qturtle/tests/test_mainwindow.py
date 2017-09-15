@@ -11,13 +11,11 @@ pytestmark = [
 ]
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def main_window(qtbot):
     widget = TurtleMainWindow()
     qtbot.addWidget(widget)
-    with mock.patch('qturtle.qsci.qsciconsole.TranspylerConsole.timerEvent',
-                    lambda x, t: None):
-        yield widget
+    return widget
 
 
 @pytest.fixture
