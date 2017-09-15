@@ -102,7 +102,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     install_requires=qt_packages + [
-        'transpyler',
+        'transpyler>=0.4.0',
     ],
     extras_require={
         'dev': [
