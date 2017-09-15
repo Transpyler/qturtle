@@ -15,8 +15,8 @@ from qturtle.colors import COLOR_SALMON, COLOR_GRAY3, COLOR_ORANGE, \
     COLOR_LEAD, COLOR_BLUE_AQUA, COLOR_GREEN, COLOR_BLUE_SEA, COLOR_PINK, \
     COLOR_BLUE, COLOR_MAGENTA, COLOR_RED_DARK, COLOR_AQUA, \
     COLOR_PURPLE, COLOR_GRAY9, COLOR_GRAY4, COLOR_GRAY6
-from .. import mixins
-from ..colors import COLOR_BLACK, COLOR_GRAY1, COLOR_GRAY2, COLOR_WHITE
+from qturtle import mixins
+from qturtle.colors import COLOR_BLACK, COLOR_GRAY1, COLOR_GRAY2, COLOR_WHITE
 
 Return = QtCore.Qt.Key_Return
 Enter = QtCore.Qt.Key_Enter

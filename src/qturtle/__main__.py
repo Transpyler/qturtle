@@ -1,6 +1,6 @@
-from qturtle.mainwindow import start_application
+from transpyler import get_transpyler
+
+transpyler = get_transpyler()
 
 if __name__ == '__main__':
-    from transpyler import simple_transpyler
-
-    start_application(simple_transpyler)
+    transpyler.start_qturtle()

@@ -1,13 +1,9 @@
 """
-These are functions that should be executed by the Kernel application.
-
-In the language of the transpyler.tuga module, the GUI application is the turtle
-server and the Jupyter kernel is the client. The forward(), left(),
-etc functions on the client just send requests for the Qt application asking
-for updates or information.
+These are functions that should be executed by the Jupyter kernel application.
 """
+from transpyler import Transpyler
 from transpyler.turtle import state
-from transpyler.turtle.qt.turtle import Turtle
+from transpyler.turtle.qt import Turtle
 
 TURTLES_COMM = None
 MESSAGE_HANDLERS = []
@@ -66,9 +62,12 @@ def comm(ipython):
                                                 handle_qturtle_comm)
 
 
-def init_namespace(transpyler, ns):
+def init_namespace(transpyler: Transpyler, ns):
     """
-    Return the default namespace.
+    Update the given namespace with function computed from the transpyler
+    object.
     """
 
-    transpyler.qturtle = True
+    transpyler.has_turtle_functions = True
+    transpyler.turtle_backend = 'qt'
+    ns.update(transpyler.recreate_namespace())

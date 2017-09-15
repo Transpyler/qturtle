@@ -1,9 +1,19 @@
 from PyQt5 import QtWidgets, QtCore
 
 from .mixins import ToggleThemeMixin
+from .qscieditor import TranspylerEditor
+from .qtconsole import TranspylerConsole
 
 
 class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
+    """
+    A Widget with a foldable editor part and a REPL console.
+
+    The editor and the console are layed out vertically and users can fold it
+    in order to either hide the editor, the console or to show both
+    simultaneously.
+    """
+
     @property
     def turtleMessageSignal(self):
         return self._console.turtleMessageSignal
@@ -151,7 +161,7 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
         self._editor.zoomTo(factor)
 
     def _createConsoleApp(self):
-        raise NotImplementedError('must be implemented in a subclass')
+        return TranspylerConsole(self.transpyler(), parent=self)
 
     def _createEditorApp(self):
-        raise NotImplementedError('must be implemented in a subclass')
+        return TranspylerEditor(self.transpyler(), parent=self)

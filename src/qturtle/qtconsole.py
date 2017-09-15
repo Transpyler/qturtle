@@ -6,7 +6,6 @@ kernel. The console app does not necessarely open a qt window. Use the
 method .getWidget() or .showWidget() methods to initialize and show a qt widget
 that interact the console application.
 """
-import sys
 import uuid
 from collections import deque
 from logging import getLogger
@@ -21,7 +20,6 @@ from transpyler import Transpyler
 from transpyler.jupyter.app import TranspylerKernelManager
 from transpyler.jupyter.setup import setup_assets
 from . import colors
-from . import styles
 from .mixins import TranspylerConsoleMixin
 
 log = getLogger('gui.ipytuga')
@@ -136,8 +134,8 @@ class ITranspylerWidgetQtConsoleApp(ITranspylerQtConsoleApp):
             in_prompt='>>>',
             out_prompt='-->',
         )
-        widget.style_sheet = styles.default_dark_style_sheet
-        widget.syntax_style = styles.default_dark_syntax_style
+        widget.style_sheet = dark_style_sheet
+        widget.syntax_style = dark_syntax_style
         widget._existing = self.existing
         widget._may_close = not self.existing
         widget._confirm_exit = self.confirm_exit
@@ -359,6 +357,7 @@ dark_style_sheet = dark_style_template.format(
     prompt_out_number=colors.COLOR_SALMON_DARK,
 )
 dark_syntax_style = 'monokai'
+
 
 if __name__ == '__main__':
     start_qtconsole()

@@ -7,7 +7,7 @@ _turtle_view = TurtleView
 
 class TurtleScene(_TurtleScene):
     """
-    Adapts TurtleScene to use jupyter comms as IPC.
+    Adapts TurtleScene to use Jupyter comms as IPC.
     """
 
     messageReplySignal = QtCore.pyqtSignal(object)

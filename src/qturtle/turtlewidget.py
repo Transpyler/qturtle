@@ -1,8 +1,8 @@
 from PyQt5 import QtWidgets
 from lazyutils import delegate_to
 
+from .repleditor import ReplEditor
 from .turtlescene import TurtleScene, TurtleView
-from .qsci.qscirepleditor import QsciReplEditor
 
 
 class TurtleWidget(QtWidgets.QWidget):
@@ -12,15 +12,15 @@ class TurtleWidget(QtWidgets.QWidget):
     with some menus.
     """
 
-    text = delegate_to('_editor')
-    setText = delegate_to('_editor')
     zoomIn = delegate_to('_view')
     zoomOut = delegate_to('_view')
-    increaseFont = delegate_to('_editor')
-    decreaseFont = delegate_to('_editor')
-    toggleTheme = delegate_to('_editor')
     saveImage = delegate_to('_view')
     flushExecution = delegate_to('_scene')
+    increaseFont = delegate_to('_repl_editor')
+    decreaseFont = delegate_to('_repl_editor')
+    toggleTheme = delegate_to('_repl_editor')
+    text = delegate_to('_repl_editor')
+    setText = delegate_to('_repl_editor')
 
     def __init__(self,
                  transpyler,
@@ -35,8 +35,8 @@ class TurtleWidget(QtWidgets.QWidget):
 
         # Configure editor
         self._transpyler = transpyler
-        self._repl_editor = QsciReplEditor(header_text=header_text,
-                                           transpyler=transpyler)
+        self._repl_editor = ReplEditor(header_text=header_text,
+                                       transpyler=transpyler)
         self._repl_editor.setText(text)
         self._repl_editor.initNamespace()
         self._repl_editor.sizePolicy().setHorizontalPolicy(7)
@@ -52,7 +52,8 @@ class TurtleWidget(QtWidgets.QWidget):
 
         # Connect signals
         self._repl_editor.turtleMessageSignal.connect(self._scene.handleMessage)
-        self._scene.messageReplySignal.connect(self._repl_editor.handleMessageReply)
+        self._scene.messageReplySignal.connect(
+            self._repl_editor.handleMessageReply)
 
     def scene(self):
         return self._scene
@@ -74,12 +75,3 @@ class TurtleWidget(QtWidgets.QWidget):
 
     def fontZoomTo(self, factor):
         self._repl_editor.zoomTo(factor)
-
-    def toggleTheme(self):
-        self._repl_editor.toggleTheme()
-
-    def text(self):
-        return self._repl_editor.text()
-
-    def setText(self, text):
-        self._repl_editor.setText(text)
