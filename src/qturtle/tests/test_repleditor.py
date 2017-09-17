@@ -1,7 +1,7 @@
 import sys
 import pytest
 from qturtle.qsci.qscirepleditor import QsciReplEditor
-from qturtle.qsci.qsciconsole import TranspylerConsole 
+from qturtle.qsci.qsciconsole import TranspylerConsole
 from transpyler import Transpyler
 from PyQt5 import QtWidgets
 
@@ -15,8 +15,7 @@ def repleditor(m_transpyler):
     app = QtWidgets.QApplication(sys.argv)
     return QsciReplEditor(m_transpyler)
 
-'''
 def test_handleMessageReply(repleditor):
-    repleditor.handleMessageReply("test")
-    assert isinstance(repleditor._console,TranspylerConsole)
-'''
+    pass
+
+
