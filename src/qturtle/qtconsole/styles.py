@@ -1,26 +1,12 @@
-import uuid
-from collections import deque
-from logging import getLogger
+'''
+ Styles
 
-from PyQt5 import QtCore
-from PyQt5 import QtWidgets
-from jupyter_client.localinterfaces import is_local_ip
-from lazyutils import lazy
-from qtconsole.qtconsoleapp import JupyterQtConsoleApp
+ The default dark style sheet: white text on a black background.
+'''
 
-from transpyler import Transpyler
-from transpyler.jupyter.app import TranspylerKernelManager
-from transpyler.jupyter.setup import setup_assets
 from qturtle import colors
-from qturtle.mixins import TranspylerConsoleMixin
 
 
-
-# -----------------------------------------------------------------------------
-# Styles
-# -----------------------------------------------------------------------------
-
-# The default dark style sheet: white text on a black background.
 dark_style_template = '''
     QPlainTextEdit, QTextEdit {{
         background-color: {bgcolor};
@@ -63,7 +49,3 @@ dark_style_sheet = dark_style_template.format(
     prompt_out_number=colors.COLOR_SALMON_DARK,
 )
 dark_syntax_style = 'monokai'
-
-
-if __name__ == '__main__':
-    start_qtconsole()

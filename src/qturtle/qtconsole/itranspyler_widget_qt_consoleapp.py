@@ -1,26 +1,15 @@
-import uuid
-from collections import deque
 from logging import getLogger
 
-from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from jupyter_client.localinterfaces import is_local_ip
 from lazyutils import lazy
-from qtconsole.qtconsoleapp import JupyterQtConsoleApp
-
-from transpyler import Transpyler
-from transpyler.jupyter.app import TranspylerKernelManager
-from transpyler.jupyter.setup import setup_assets
-from qturtle import colors
-from qturtle.mixins import TranspylerConsoleMixin
 
 
-from .styles import dark_style_sheet, dark_syntax_style, dark_style_template
+from .styles import dark_style_sheet, dark_syntax_style
 from .itranspyler_qt_consoleapp import ITranspylerQtConsoleApp
 
 log = getLogger('gui.ipytuga')
 _ = lambda x: x
-
 
 
 class ITranspylerWidgetQtConsoleApp(ITranspylerQtConsoleApp):
@@ -81,4 +70,3 @@ class ITranspylerWidgetQtConsoleApp(ITranspylerQtConsoleApp):
 
     def _handle_kernel_info_reply(self):
         pass
-
