@@ -15,16 +15,14 @@ class ToggleThemeMixin:
     def toggleTheme(self):
         if self._theme == 'dark':
             self.setTheme('light')
-            self._theme = 'light'
         else:
             self.setTheme('dark')
-            self._theme = 'dark'
 
     def theme(self):
         return self._theme
 
     def setTheme(self, name):
-        raise NotImplementedError
+        self._theme = name
 
 
 class ReplElementMixin(ToggleThemeMixin):
