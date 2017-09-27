@@ -2,9 +2,12 @@ import os
 import pytest
 from qturtle.mixins import ToggleThemeMixin
 from qturtle.mixins import ReplElementMixin
+from qturtle.mixins import TranspylerEditorMixin
+from qturtle.mixins import TranspylerConsoleMixin
+import warnings
 
 '''
-Tests for the ToggleThemeMixin class
+Tests of the ToggleThemeMixin class
 '''
 @pytest.fixture
 def mixins():
@@ -37,7 +40,7 @@ def test_setTheme(mixins,name):
     assert result == 'light'
 
 '''
-Tests for the ReplElementMixin class
+Tests of the ReplElementMixin class
 '''
 @pytest.fixture
 def repmixin():
@@ -49,4 +52,64 @@ Research a better implementation for the test bellow
 '''
 def test_widget(repmixin):
     result = repmixin.widget()
-    assert result == result
+    assert result == repmixin
+
+'''
+Tests of the TranspylerEditorMixin class
+'''
+@pytest.fixture
+def editorMixin():
+    variable = TranspylerEditorMixin()
+    variable._console = 'console'
+    return variable
+
+@pytest.fixture
+def console():
+    return 'test_console'
+
+def test_setConsole(editorMixin,console):
+    result = editorMixin
+    result.setConsole(console)
+    assert result._console == 'test_console'
+
+def test_fullText(editorMixin):
+    with pytest.raises(NotImplementedError):
+        editorMixin.fullText()
+
+def test_runCodeHasNotattr(editorMixin):
+    result = editorMixin
+    result.setConsole(None)
+    if not hasattr(editorMixin,'_console'):
+        with pytest.raises(RuntimeError):
+            result.runCode()
+
+def test_runCodeHasattr(editorMixin):
+    result = editorMixin
+    with pytest.raises(NotImplementedError):
+        result.fullText()
+
+'''
+Tests of the TranspylerConsoleMixin class
+'''
+'''
+@pytest.fixture
+def consoleMixin():
+    transpyler = "test"
+    variable = TranspylerConsoleMixin()
+    variable._transpyler = transpyler
+    variable._scene_handler = None
+    return variable
+
+@pytest.fixture
+def call():
+    return 'test'
+
+@pytest.fixture
+def turtle():
+    return None
+
+def test_setNamespace(consoleMixin,value):
+    result = consoleMixin
+    with pytest.raises(NotImplementedError):
+        result.setNamespace(value)
+'''
