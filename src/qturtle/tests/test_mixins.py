@@ -91,11 +91,15 @@ def test_runCodeHasattr(editorMixin):
 '''
 Tests of the TranspylerConsoleMixin class
 '''
-'''
+class obj():
+    def __init__(self,name="test"):
+        super().__init__()
+        self.name = name
+
 @pytest.fixture
 def consoleMixin():
-    transpyler = "test"
-    variable = TranspylerConsoleMixin()
+    ob = obj()
+    variable = TranspylerConsoleMixin(transpyler=ob)
     variable._transpyler = transpyler
     variable._scene_handler = None
     return variable
@@ -107,9 +111,3 @@ def call():
 @pytest.fixture
 def turtle():
     return None
-
-def test_setNamespace(consoleMixin,value):
-    result = consoleMixin
-    with pytest.raises(NotImplementedError):
-        result.setNamespace(value)
-'''

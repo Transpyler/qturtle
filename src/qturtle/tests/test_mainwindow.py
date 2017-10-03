@@ -10,6 +10,9 @@ pytestmark = [
                        reason='disable QT on CI until we figure out how to do it ;)')
 ]
 
+'''
+Tests of the TurtleMainWindow class
+'''
 
 @pytest.fixture
 def main_window(qtbot):
