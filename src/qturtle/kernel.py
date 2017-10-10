@@ -2,14 +2,14 @@
 These are functions that should be executed by the Jupyter kernel application.
 """
 from transpyler import Transpyler
-from transpyler.turtle import state
+from transpyler.turtle import turtleState, mirrorState
 from transpyler.turtle.qt import Turtle
 
 TURTLES_COMM = None
 MESSAGE_HANDLERS = []
 
 
-class TurtleState(state.MirrorState):
+class TurtleState(mirrorState.MirrorState):
     """
     A client state with fake inbox/outbox queues that redirects requests to
     the comm channnel.
