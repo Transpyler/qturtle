@@ -299,6 +299,17 @@ class TranspylerConsole(TranspylerConsoleMixin, QtWidgets.QWidget):
         font.setPointSize(10 + factor)
         self._widget.font = font
 
+    def getFontSize(self):
+        font = self._widget.font
+        size = font.pointSize() 
+        return size
+        
+    def setFontSize(self,size):
+        font = self._widget.font
+        font.setPointSize(size)
+        self._widget.font = font
+
+
 
 def start_qtconsole(transpyler=None, **kwargs):
     """
