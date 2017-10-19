@@ -198,6 +198,9 @@ class TranspylerEditor(mixins.TranspylerEditorMixin, Qsci.QsciScintilla):
     def sizeHint(self):
         return QtCore.QSize(100, 200)
 
+    def getFontSize(self):
+        return self.fontsize
+        
     def setAllFonts(self, family='monospace', size=10, fixedpitch=True):
         """Set the font of all visible elements in the text editor.
 
