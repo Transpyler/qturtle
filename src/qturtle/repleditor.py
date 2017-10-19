@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 
 from .mixins import ToggleThemeMixin
 from .qscieditor import TranspylerEditor
-from .qtconsole import TranspylerConsole
+from .qtconsole.transpyler_console import TranspylerConsole
 
 
 class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
