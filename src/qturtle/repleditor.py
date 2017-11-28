@@ -1,5 +1,5 @@
 import os
-import pickle
+import json
 from pathlib import Path
 from PyQt5 import QtWidgets, QtCore
 from .mixins import ToggleThemeMixin
@@ -7,7 +7,7 @@ from .qscieditor import TranspylerEditor
 from .qtconsole import TranspylerConsole
 
 
-SRC_DIR = os.path.dirname(os.path.abspath(__file__)) # This is your Project Root
+SRC_DIR = os.path.dirname(os.path.abspath(__file__)) + "/gui_configurations" # This is your Project Root
 
 class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
     """
@@ -29,17 +29,15 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
                  hide_console_margins=False):
         assert transpyler
 
-        self.interfaceValues = {} # Dict to hold interface options.
-        self.__getInterfaceValues() # Update dict with a pkl file. 
- 
-        super().__init__(parent=parent, theme=self.interfaceValues['theme'])
+        self.theme = self._get_theme()
+        super().__init__(parent=parent, theme=self.theme)
         self._transpyler = transpyler
         self._header_text = header_text
         self._hide_console_margins = hide_console_margins
         self._console = self._createConsoleApp()
         self._editor = self._createEditorApp()
         self._editor.setConsole(self._console)
-
+        
        
         # Create buttons
         run_button = QtWidgets.QPushButton('Run')
@@ -86,14 +84,12 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
         self.setMinimumSize(QtCore.QSize(100, 200))
 
         # Set theme
-        self.theme = self.interfaceValues['theme'] 
-        self.setTheme(self.interfaceValues['theme'])
-
+        self.theme = self._get_theme() 
+        self.setTheme(self.theme)
+        
         # Set font size
-        self._console.setFontSize(self.interfaceValues['font-size'])
-        self._editor.setAllFonts(size=self.interfaceValues['font-size'])       
-
-
+        self._console.setFontSize(self._get_font())
+        self._editor.setAllFonts(size=self._get_font())       
        
     def handleMessageReply(self, msg):
         self._console.handleMessageReply(msg)
@@ -162,24 +158,24 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
     def setTheme(self, theme):
         self._console.setTheme(theme)
         self._editor.setTheme(theme)
-
-        self.interfaceValues['theme'] = theme
-        self.__save_interface()
+        self.theme = theme
+        self._check_file()
+        self._create_files(theme=self.theme,font_size=self._get_font())
 
     def zoomIn(self):
         self._console.zoomIn()
         self._editor.zoomIn()
-        self.__read_font()
+        self._set_font()
 
     def zoomOut(self):
         self._console.zoomOut()
         self._editor.zoomOut()
-        self.__read_font()
+        self._set_font()
 
     def zoomTo(self, factor):
         self._console.zoomTo(factor)
         self._editor.zoomTo(factor)
-        self.__read_font()
+        self._set_font()
 
     def _createConsoleApp(self):
         return TranspylerConsole(self.transpyler(), parent=self)
@@ -189,39 +185,45 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
 
     # Save interface options functions
     
-    def __save_interface(self):
-        with open(SRC_DIR + "/gui_conf.pkl","wb") as config:
-            pickle.dump(self.interfaceValues,config,pickle.HIGHEST_PROTOCOL)
-            config.close()
-            
-
-
-    def __checkFile(self):
+    def _check_file(self):
         exist = False
-        PATH = Path(SRC_DIR + "/gui_conf.pkl")
+        PATH = Path(SRC_DIR)
 
         if(PATH.is_file()):
             exist = True
         else:
-            with open(SRC_DIR + "/gui_conf.pkl","wb") as config:
-                self.interfaceValues['theme'] = 'dark'
-                self.interfaceValues['font-size'] = 10
-                
-                config.close()
-                
+            self._create_files()
             exist = False
 
         return exist
-            
-    def __getInterfaceValues(self):
-        
-        if (self.__checkFile()):
-            with open(SRC_DIR + "/gui_conf.pkl","rb") as config:
-                self.interfaceValues = pickle.load(config)
-        else:
-             self.interfaceValues['theme'] = 'dark'
-             self.interfaceValues['font-size'] = 10
 
-    def __read_font(self):
-        self.interfaceValues['font-size'] = self._console.getFontSize() 
-        self.__save_interface()
+    def _create_files(self, theme="dark", font_size=10):
+        with open(SRC_DIR, "w") as config:
+            interfaceValues = {
+                'theme':theme,
+                'font-size':font_size,
+            }
+            json.dump(interfaceValues,config)
+            config.close()
+                        
+    def _set_font(self):
+        self._check_file()
+        self._create_files(theme=self.theme,font_size=self._console.getFontSize())
+       
+    def _get_theme(self):
+        self._check_file()
+        with open(SRC_DIR,"r") as config:
+            interfaceValues = json.load(config)
+            if interfaceValues['theme'] != '':
+                return interfaceValues['theme']
+            else:
+                return 'dark'
+
+    def _get_font(self):
+        self._check_file()
+        if(self._check_file()):
+            with open(SRC_DIR,"r") as config:
+                interfaceValues = json.load(config)
+            return interfaceValues['font-size']
+        else:
+            return 10
