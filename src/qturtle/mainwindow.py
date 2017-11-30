@@ -257,7 +257,8 @@ class TurtleMainWindow(QtWidgets.QMainWindow):
             self._documentation_view.show()
         else:
             dirname = os.path.dirname(__file__)
-            filename = os.path.join(dirname, 'doc', 'html', 'index.html')
+            # filename = os.path.join(dirname, 'doc', 'tutorial.rst')
+            filename = os.path.join(dirname, 'doc', 'app_docs', 'build', 'index.html')
             view = QtWebKitWidgets.QWebView()
             view.load(QtCore.QUrl("file://%s" % filename))
             page = view.page()
