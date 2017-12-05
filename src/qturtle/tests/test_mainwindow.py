@@ -3,13 +3,16 @@ import pytest
 from PyQt5 import QtCore
 import mock
 from qturtle.mainwindow import TurtleMainWindow
-
+from transpyler import Transpyler
 
 pytestmark = [
     pytest.mark.skipif(os.environ.get('TEST_QT', 'true') == 'false',
                        reason='disable QT on CI until we figure out how to do it ;)')
 ]
 
+'''
+Tests of the TurtleMainWindow class
+'''
 
 @pytest.fixture
 def main_window(qtbot):
@@ -54,3 +57,32 @@ def test_help_menu(menus, main_window):
 
     with mock.patch('PyQt5.QtWidgets.QMessageBox.about', func):
         about.triggered.emit()
+
+@pytest.fixture
+def turtle():
+    variable = TurtleMainWindow()
+    variable._transpyler = 1
+    variable._turtlewidget.setText("TEST")
+    return variable
+
+@pytest.fixture
+def text():
+    variable = "testText"
+    return variable
+
+def test_transpyler(turtle):
+    result = turtle.transpyler()
+    assert result == 1
+
+def test__defaultTranspyler(turtle):
+    result = turtle._defaultTranspyler()
+    assert result == Transpyler()
+
+def test_editorText(turtle):
+    result = turtle.editorText()
+    assert result == "TEST"
+
+def test_setEditorText(turtle,text):
+    turtle.setEditorText(text)
+    result = turtle.editorText()
+    assert result == "testText"
