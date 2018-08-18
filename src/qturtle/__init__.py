@@ -1,2 +1,4 @@
-from .__meta__ import __version__, __author__
+__version__ = '0.5.0'
+__author__ = 'Fábio Macêdo Mendes'
+
 from . import mathutil as math

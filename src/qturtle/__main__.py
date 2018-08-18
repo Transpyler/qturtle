@@ -1,6 +1,10 @@
 from transpyler import get_transpyler
 
-transpyler = get_transpyler()
+
+def start_application():
+    transpyler = get_transpyler()
+    transpyler.start_qturtle()
+
 
 if __name__ == '__main__':
-    transpyler.start_qturtle()
+    start_application()

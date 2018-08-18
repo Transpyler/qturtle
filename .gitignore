@@ -30,3 +30,5 @@ src/transpyler/__meta__.py
 
 # Coverage
 htmlcov/
+
+.pytest_cache/

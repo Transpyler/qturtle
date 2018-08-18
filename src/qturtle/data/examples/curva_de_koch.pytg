@@ -50,5 +50,5 @@ definir função koch(tamanho, iterações):
 
 
 # Aqui executamos o código para gerar a curva.
-velocidade(9)
+definir_velocidade(9)
 koch(400, 4)

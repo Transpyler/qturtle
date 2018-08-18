@@ -293,7 +293,7 @@ class TranspylerEditor(mixins.TranspylerEditorMixin, Qsci.QsciScintilla):
 
         # Auto indentation
         if modifiers & Control and key in (Return, Enter):
-            self.runCode()
+            self.runEditorCode()
 
         # Do not catch zoom factor changes
         elif modifiers & Control and key == Minus:

@@ -44,7 +44,7 @@ class TranspylerEditorMixin(ReplElementMixin):
     def setConsole(self, console):
         self._console = console
 
-    def runCode(self):
+    def runEditorCode(self):
         """
         Runs the source code in the editor when user press Control + Return
         """
@@ -103,9 +103,8 @@ class TranspylerConsoleMixin(ReplElementMixin):
     def contextMenuEvent(self, e):
         pass
 
-    def runCode(self, text):
+    def runEditorCode(self, text):
         """
         Run code on terminal.
         """
-
         raise NotImplementedError

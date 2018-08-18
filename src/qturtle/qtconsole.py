@@ -263,18 +263,16 @@ class TranspylerConsole(TranspylerConsoleMixin, QtWidgets.QWidget):
         client.shell_channel.send(msg)
 
     def runCodeSilent(self, code):
-        self._app.execute(code, silent=True, stop_on_error=False)
+        self._app.execute(code)
 
-    def runCode(self, code, hidden=False, interactive=True, short=True):
-        if not code.strip():
+    def runCode(self, code):
+        code = code.strip()
+        if not code:
             return
-
-        if '\n' in code and short:
-            self._widget.execute('', hidden, interactive)
-            self.runCodeSilent("print('...')")
-            self.runCodeSilent(code)
-        else:
-            self._widget.execute(code, hidden, interactive)
+        _ = self.transpyler().translate
+        self._widget._show_prompt(_('Running code...'), newline=False)
+        self._app.execute(code)
+        self._widget.execute('')
 
     def setTheme(self, theme):
         self._app.set_theme(theme)
@@ -357,7 +355,6 @@ dark_style_sheet = dark_style_template.format(
     prompt_out_number=colors.COLOR_SALMON_DARK,
 )
 dark_syntax_style = 'monokai'
-
 
 if __name__ == '__main__':
     start_qtconsole()

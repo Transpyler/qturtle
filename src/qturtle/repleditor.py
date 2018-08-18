@@ -50,7 +50,7 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
         buttons.setFixedHeight(25)
 
         # Connect signals
-        run_button.clicked.connect(self.runCode)
+        run_button.clicked.connect(self.runEditorCode)
         hideup_button.clicked.connect(self.hideUp)
         hidedown_button.clicked.connect(self.hideDown)
 
@@ -101,7 +101,7 @@ class ReplEditor(ToggleThemeMixin, QtWidgets.QWidget):
     def initNamespace(self):
         self._console.initNamespace()
 
-    def runCode(self):
+    def runEditorCode(self):
         text = self._editor.fullText()
         if text:
             result = self._console.runCode(text)

@@ -1,6 +1,8 @@
 import codecs
 import os
 import sys
+
+import re
 from setuptools import setup, find_packages
 
 
@@ -39,17 +41,10 @@ if '--cx-freeze' in sys.argv:
     setup_kwargs['options'] = {'build_exe': build_options}
     sys.argv.remove('--cx-freeze')
 
-
-# Save version and author to __meta__.py
-version = open('VERSION').read().strip()
-dirname = os.path.dirname(__file__)
-path = os.path.join(dirname, 'src', 'qturtle', '__meta__.py')
-meta = '''# Automatically created. Please do not edit.
-__version__ = '%s'
-__author__ = 'F\\xe1bio Mac\\xeado Mendes'
-''' % version
-with open(path, 'w') as F:
-    F.write(meta)
+# Extract version
+init  = open(os.path.join('src', 'qturtle', '__init__.py')).read()
+m = re.search(r"__version__ ?= ?'([0-9a-z.]+)'", init)
+version = m.group(1)
 
 
 # Check if Qt packages need to be installed
@@ -57,7 +52,7 @@ qt_packages = []
 try:
     import PyQt5
 except ImportError:
-    qt_packages.append('PyQt5')
+    qt_packages.extend(['PyQt5', 'PyQt5_sip'])
 try:
     import PyQt5.Qsci
 except ImportError:
@@ -102,7 +97,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     install_requires=qt_packages + [
-        'transpyler>=0.4.0',
+        'transpyler~=0.5.0',
     ],
     extras_require={
         'dev': [
