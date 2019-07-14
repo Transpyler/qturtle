@@ -13,7 +13,7 @@ __pycache__/
 
 # Build directories
 docs/_build/
-build/
+#build/
 dist/
 
 # Python-boilerplate auto generated files
