@@ -4,6 +4,7 @@ These are functions that should be executed by the Jupyter kernel application.
 from transpyler import Transpyler
 from transpyler.turtle import state
 from transpyler.turtle.qt import Turtle
+from transpyler.namespace import recreate_namespace
 
 TURTLES_COMM = None
 MESSAGE_HANDLERS = []
@@ -70,4 +71,4 @@ def init_namespace(transpyler: Transpyler, ns):
 
     transpyler.has_turtle_functions = True
     transpyler.turtle_backend = 'qt'
-    ns.update(transpyler.recreate_namespace())
+    ns.update(recreate_namespace(transpyler))
